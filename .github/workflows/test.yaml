@@ -1,0 +1,33 @@
+name: Infra pipeline
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches:
+      - main
+      #- develop
+
+permissions:
+  # for AWS OIDC
+  id-token: write
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS Credentials with OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+          role-session-name: GithubOIDC
+          aws-region: ${{ vars.AWS_DEFAULT_REGION }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test OIDC
+        run: |
+          aws sts get-caller-identity
