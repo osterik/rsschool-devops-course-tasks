@@ -22,6 +22,8 @@ repos:
       #     - --args=--compact
       #     - --args=--quiet
       - id: terraform_trivy
+        args:
+          - --args=--skip-dirs=".terraform"
       - id: terraform_validate
       # - id: terrascan # same findings as trivy
 

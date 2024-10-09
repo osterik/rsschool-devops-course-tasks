@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  main:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,5 +29,19 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Test OIDC
-        run: |
-          aws sts get-caller-identity
+        run: aws sts get-caller-identity
+
+      - name: terraform-setup
+        uses: hashicorp/setup-terraform@v3
+
+      - name: terraform-check
+        run: terraform fmt -check -recursive
+
+      - name: terraform-init
+        run: terraform init
+
+      - name: terraform-plan
+        run: terraform plan -input=false -out=PLAN.trf
+
+      - name: terraform-apply
+        run: terraform apply PLAN.trf
