@@ -46,6 +46,7 @@ resource "aws_iam_role_policy_attachment" "github_oidc" {
     "AmazonVPCFullAccess",
     "AmazonSQSFullAccess",
     "AmazonEventBridgeFullAccess",
+    "AmazonDynamoDBFullAccess",
   ])
 
   role       = aws_iam_role.github_oidc.name
